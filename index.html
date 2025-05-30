@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Study Tool - RGB vs CMY, HSI & Color Blindness</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Color Study Tool</h1>
+            <p>Interactive tool for studying RGB vs CMY, HSI Color Model, and Color Blindness</p>
+        </header>
+
+        <div class="main-content">
+            <!-- RGB Section -->
+            <section class="color-section">
+                <h2>🖥️ RGB (Additive - Screens)</h2>
+                <div class="controls">
+                    <div class="slider-group">
+                        <label for="red">Red (R):</label>
+                        <input type="range" id="red" min="0" max="255" value="255">
+                        <span id="red-value">255</span>
+                    </div>
+                    <div class="slider-group">
+                        <label for="green">Green (G):</label>
+                        <input type="range" id="green" min="0" max="255" value="0">
+                        <span id="green-value">0</span>
+                    </div>
+                    <div class="slider-group">
+                        <label for="blue">Blue (B):</label>
+                        <input type="range" id="blue" min="0" max="255" value="0">
+                        <span id="blue-value">0</span>
+                    </div>
+                </div>
+                <div class="color-display" id="rgb-display"></div>
+                <div class="color-info">
+                    <p><strong>RGB:</strong> <span id="rgb-text">rgb(255, 0, 0)</span></p>
+                    <p><strong>Hex:</strong> <span id="hex-text">#ff0000</span></p>
+                </div>
+            </section>
+
+            <!-- CMY Section -->
+            <section class="color-section">
+                <h2>🖨️ CMY (Subtractive - Printers)</h2>
+                <div class="controls">
+                    <div class="slider-group">
+                        <label for="cyan">Cyan (C):</label>
+                        <input type="range" id="cyan" min="0" max="100" value="0">
+                        <span id="cyan-value">0%</span>
+                    </div>
+                    <div class="slider-group">
+                        <label for="magenta">Magenta (M):</label>
+                        <input type="range" id="magenta" min="0" max="100" value="100">
+                        <span id="magenta-value">100%</span>
+                    </div>
+                    <div class="slider-group">
+                        <label for="yellow">Yellow (Y):</label>
+                        <input type="range" id="yellow" min="0" max="100" value="100">
+                        <span id="yellow-value">100%</span>
+                    </div>
+                </div>
+                <div class="color-display" id="cmy-display"></div>
+                <div class="color-info">
+                    <p><strong>CMY:</strong> <span id="cmy-text">C:0% M:100% Y:100%</span></p>
+                </div>
+            </section>
+
+            <!-- HSI Section -->
+            <section class="color-section">
+                <h2>🌈 HSI Color Model</h2>
+                <div class="controls">
+                    <div class="slider-group">
+                        <label for="hue">Hue (H) - Color:</label>
+                        <input type="range" id="hue" min="0" max="360" value="0">
+                        <span id="hue-value">0° (Red)</span>
+                    </div>
+                    <div class="slider-group">
+                        <label for="saturation">Saturation (S) - Purity:</label>
+                        <input type="range" id="saturation" min="0" max="100" value="100">
+                        <span id="saturation-value">100%</span>
+                    </div>
+                    <div class="slider-group">
+                        <label for="intensity">Intensity (I) - Brightness:</label>
+                        <input type="range" id="intensity" min="0" max="100" value="50">
+                        <span id="intensity-value">50%</span>
+                    </div>
+                </div>
+                <div class="color-display" id="hsi-display"></div>
+                <div class="color-info">
+                    <p><strong>HSI:</strong> <span id="hsi-text">H:0° S:100% I:50%</span></p>
+                    <p><strong>Formula:</strong> I = 0.299R + 0.587G + 0.144B</p>
+                </div>
+            </section>            <!-- RGB to Intensity Calculator Section -->
+            <section class="color-section">
+                <h2>🧮 RGB to Intensity Calculator</h2>
+                <div class="intensity-calculator">
+                    <div class="calculator-input">
+                        <h3>Enter RGB Values</h3>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="calc-r-input">Red (0-255):</label>
+                                <input type="number" id="calc-r-input" min="0" max="255" value="255" class="calc-input">
+                            </div>
+                            <div class="input-group">
+                                <label for="calc-g-input">Green (0-255):</label>
+                                <input type="number" id="calc-g-input" min="0" max="255" value="128" class="calc-input">
+                            </div>
+                            <div class="input-group">
+                                <label for="calc-b-input">Blue (0-255):</label>
+                                <input type="number" id="calc-b-input" min="0" max="255" value="64" class="calc-input">
+                            </div>
+                        </div>
+                        <button id="calculate-btn" class="calculate-button">Calculate Intensity</button>
+                        
+                        <div class="quick-presets">
+                            <h4>Quick Presets:</h4>
+                            <div class="preset-grid">
+                                <button class="preset-btn" onclick="setCalculatorRGB(0, 0, 0)">Black</button>
+                                <button class="preset-btn" onclick="setCalculatorRGB(255, 255, 255)">White</button>
+                                <button class="preset-btn" onclick="setCalculatorRGB(255, 0, 0)">Red</button>
+                                <button class="preset-btn" onclick="setCalculatorRGB(0, 255, 0)">Green</button>
+                                <button class="preset-btn" onclick="setCalculatorRGB(0, 0, 255)">Blue</button>
+                                <button class="preset-btn" onclick="setCalculatorRGB(128, 128, 128)">Gray</button>
+                                <button class="preset-btn" onclick="setCalculatorRGB(255, 255, 0)">Yellow</button>
+                                <button class="preset-btn" onclick="setCalculatorRGB(255, 0, 255)">Magenta</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="calculator-results">
+                        <h3>Calculation Result</h3>
+                        <div class="color-preview" id="calc-color-preview"></div>
+                        
+                        <div class="calculation-steps" id="calc-steps" style="display: none;">
+                            <div class="step">
+                                <span class="formula">I = 0.299×R + 0.587×G + 0.144×B</span>
+                            </div>
+                            <div class="step">
+                                <span class="substitution">I = 0.299×<span id="step-r">255</span> + 0.587×<span id="step-g">128</span> + 0.144×<span id="step-b">64</span></span>
+                            </div>
+                            <div class="step">
+                                <span class="calculation">I = <span id="step-r-calc">76.245</span> + <span id="step-g-calc">75.136</span> + <span id="step-b-calc">9.216</span></span>
+                            </div>
+                            <div class="step final-result">
+                                <span class="result">I = <span id="final-intensity">160.597</span></span>
+                                <span class="percentage">(<span id="final-percentage">63.0%</span> brightness)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="intensity-bar-container">
+                            <div class="intensity-bar">
+                                <div class="intensity-fill" id="calc-intensity-fill"></div>
+                                <span class="intensity-label">Intensity Level</span>
+                            </div>
+                        </div>
+                        
+                        <div class="result-summary" id="result-summary" style="display: none;">
+                            <h4>Summary</h4>
+                            <p>RGB(<span id="summary-rgb">255, 128, 64</span>) has an intensity of <span id="summary-intensity">160.6</span> out of 255</p>
+                            <p>This represents <span id="summary-percent">63.0%</span> brightness level</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RGB to HSI Calculator Section -->
+            <section class="color-section">
+                <h2>🎨 RGB to HSI Calculator</h2>
+                <div class="hsi-calculator">
+                    <div class="hsi-input">
+                        <h3>Enter RGB Values</h3>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="hsi-r-input">Red (0-255):</label>
+                                <input type="number" id="hsi-r-input" min="0" max="255" value="128" class="calc-input">
+                            </div>
+                            <div class="input-group">
+                                <label for="hsi-g-input">Green (0-255):</label>
+                                <input type="number" id="hsi-g-input" min="0" max="255" value="64" class="calc-input">
+                            </div>
+                            <div class="input-group">
+                                <label for="hsi-b-input">Blue (0-255):</label>
+                                <input type="number" id="hsi-b-input" min="0" max="255" value="192" class="calc-input">
+                            </div>
+                        </div>
+                        <button id="calculate-hsi-btn" class="calculate-button">Calculate HSI</button>
+                        
+                        <div class="quick-presets">
+                            <h4>Quick Presets:</h4>
+                            <div class="preset-grid">
+                                <button class="preset-btn" onclick="setHSICalculatorRGB(255, 0, 0)">Red</button>
+                                <button class="preset-btn" onclick="setHSICalculatorRGB(0, 255, 0)">Green</button>
+                                <button class="preset-btn" onclick="setHSICalculatorRGB(0, 0, 255)">Blue</button>
+                                <button class="preset-btn" onclick="setHSICalculatorRGB(255, 255, 0)">Yellow</button>
+                                <button class="preset-btn" onclick="setHSICalculatorRGB(255, 0, 255)">Magenta</button>
+                                <button class="preset-btn" onclick="setHSICalculatorRGB(0, 255, 255)">Cyan</button>
+                                <button class="preset-btn" onclick="setHSICalculatorRGB(128, 128, 128)">Gray</button>
+                                <button class="preset-btn" onclick="setHSICalculatorRGB(255, 128, 0)">Orange</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hsi-results">
+                        <h3>HSI Calculation Result</h3>
+                        <div class="color-preview" id="hsi-color-preview"></div>
+                        
+                        <div class="hsi-calculation-steps" id="hsi-calc-steps" style="display: none;">
+                            <div class="hsi-step">
+                                <h4>Step 1: Normalize RGB (0-1)</h4>
+                                <div class="norm-values"></div>
+                                    <span>R' = <span id="norm-r">0.502</span></span>
+                                    <span>G' = <span id="norm-g">0.251</span></span>
+                                    <span>B' = <span id="norm-b">0.753</span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="hsi-step">
+                                <h4>Step 2: Calculate Intensity</h4>
+                                <div class="intensity-calc">
+                                    <span>I = (R' + G' + B') / 3</span>
+                                    <span>I = <span id="hsi-intensity-calc">0.502</span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="hsi-step">
+                                <h4>Step 3: Calculate Saturation</h4>
+                                <div class="saturation-calc">
+                                    <span>Min = min(R', G', B') = <span id="min-value">0.251</span></span>
+                                    <span>S = 1 - (3 × Min) / (R' + G' + B')</span>
+                                    <span>S = <span id="hsi-saturation-calc">0.502</span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="hsi-step">
+                                <h4>Step 4: Calculate Hue</h4>
+                                <div class="hue-calc">
+                                    <span>θ = arccos[(R'-G') + (R'-B')] / [2√((R'-G')² + (R'-B')(G'-B'))]</span>
+                                    <span>H = <span id="hsi-hue-calc">240°</span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="hsi-final-result">
+                                <h4>Final HSI Values:</h4>
+                                <div class="final-hsi-values">
+                                    <div class="hsi-value hue-result">
+                                        <span class="label">Hue (H):</span>
+                                        <span class="value"><span id="final-hue">240°</span></span>
+                                    </div>
+                                    <div class="hsi-value saturation-result">
+                                        <span class="label">Saturation (S):</span>
+                                        <span class="value"><span id="final-saturation">50.2%</span></span>
+                                    </div>
+                                    <div class="hsi-value intensity-result">
+                                        <span class="label">Intensity (I):</span>
+                                        <span class="value"><span id="final-intensity-val">50.2%</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="hsi-visual" id="hsi-visual" style="display: none;">
+                            <div class="hue-wheel">
+                                <div class="hue-indicator" id="hue-indicator"></div>
+                                <span class="hue-label">Hue Wheel</span>
+                            </div>
+                            <div class="sat-int-bars">
+                                <div class="bar-container">
+                                    <label>Saturation</label>
+                                    <div class="visual-bar">
+                                        <div class="bar-fill saturation-fill" id="saturation-fill"></div>
+                                    </div>
+                                    <span id="sat-percent">50%</span>
+                                </div>
+                                <div class="bar-container">
+                                    <label>Intensity</label>
+                                    <div class="visual-bar">
+                                        <div class="bar-fill intensity-fill" id="intensity-fill-hsi"></div>
+                                    </div>
+                                    <span id="int-percent">50%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Color Blindness Section -->
+            <section class="color-section">
+                <h2>👁️ Color Blindness Simulation</h2>
+                <div class="controls">
+                    <div class="cb-buttons">
+                        <button id="normal-vision" class="active">Normal Vision</button>
+                        <button id="protanopia">Protanopia (No Red)</button>
+                        <button id="deuteranopia">Deuteranopia (No Green)</button>
+                        <button id="tritanopia">Tritanopia (No Blue)</button>
+                    </div>
+                </div>
+                <div class="color-display" id="cb-display"></div>
+                <div class="cb-info">
+                    <p><strong>Current View:</strong> <span id="cb-type">Normal Vision</span></p>
+                    <p><strong>Info:</strong> <span id="cb-description">All cones functioning normally</span></p>
+                </div>
+            </section>
+
+            <!-- Quick Reference -->
+            <section class="reference">
+                <h2>📚 Quick Reference</h2>
+                <div class="reference-grid">
+                    <div class="ref-item">
+                        <h3>RGB vs CMY</h3>
+                        <p><strong>RGB:</strong> Additive (screens) - Red, Green, Blue</p>
+                        <p><strong>CMY:</strong> Subtractive (printers) - Cyan, Magenta, Yellow</p>
+                    </div>
+                    <div class="ref-item">
+                        <h3>HSI Model</h3>
+                        <p><strong>Hue:</strong> Color angle (0° = Red, 120° = Green, 240° = Blue)</p>
+                        <p><strong>Saturation:</strong> Color purity (0% = gray, 100% = pure)</p>
+                        <p><strong>Intensity:</strong> Brightness (0.299R + 0.587G + 0.144B)</p>
+                    </div>
+                    <div class="ref-item">
+                        <h3>Color Blindness</h3>
+                        <p><strong>Protanopia:</strong> Missing red cones</p>
+                        <p><strong>Deuteranopia:</strong> Missing green cones</p>
+                        <p><strong>Tritanopia:</strong> Missing blue cones</p>
+                        <p><em>Red-green genes on X chromosome (affects men more)</em></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
